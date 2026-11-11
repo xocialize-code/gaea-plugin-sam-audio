@@ -1,0 +1,65 @@
+# gaea-plugin-sam-audio
+
+Meta's [SAM-Audio](https://github.com/facebookresearch/sam-audio) base as a [Gaea](https://github.com/xocialize-code/gaea)
+plugin: `audio.separate` **by description** (MES Audio 0.1 with RFC 0008, media-engine-spec 0.13.0).
+
+A client names a sound in a few lowercase words — `"speech"`, `"dog barking"`, `"drums"` — and gets it back as `target`,
+with everything else as `residual`. Both are 48 kHz mono and the mixture's length.
+
+| | |
+|---|---|
+| Model | `sam-audio-base`, one lane (`fp16`): 3.5 GB resident + 6.0 GB while running |
+| Operation | `audio.separate` with `describe` (required), `stems` (`target`, `residual`), `spans`, `seed` |
+| Mixture | up to 30 s, any sample rate; under 5 s is unreliable |
+| Works on | general sounds, speech against music, music, drums, bass. Not guitar-like instruments |
+| Stems | generated, not filtered (`stem_method: regenerated`): never derive anything by subtraction |
+| Watermark | every output carries an AudioSeal watermark (`supports.watermark: audioseal`) |
+| Engine package | [xocialize/mlx-sam-audio-swift](https://github.com/xocialize/mlx-sam-audio-swift) 0.2.1, weights [mlx-community/sam-audio-base-swift-fp16](https://huggingface.co/mlx-community/sam-audio-base-swift-fp16) |
+
+## Licence
+
+**The SAM License** (`LICENSE`), for the model, the code that runs it, and so this plugin's bundle. Commercial use is
+allowed. It prohibits military, warfare, nuclear, espionage and weapons uses and anything trade controls prohibit, and
+allows redistribution only under the same licence with a copy of it. The offer is `accepted_required` and
+`user_accept_required`: the operator accepts the terms when enabling it, and each client's user is asked to.
+
+## Requests
+
+```bash
+curl -s -H 'MES-Version: 0.1' -H 'Content-Type: application/json' http://localhost:7340/mes/v0/jobs \
+  -d '{"operation":"audio.separate","model":"sam-audio-base","inputs":{"audio":{"asset":"<mixture>"}},"params":{"describe":"speech","seed":7}}'
+```
+
+- `describe`: 1–200 characters. Short lowercase noun or verb phrases work; sentences do not. It is trimmed and
+  lower-cased for the model, and `effective.describe` reports what the model got.
+- `spans`: up to 32 of `{start_s, end_s, present}`, where the sound is, or is not, present. They help sounds that come
+  and go. A span ending more than a frame (40 ms) past the mixture is refused as `out_of_limits`.
+- The same seed gives the same bytes.
+
+## Status
+
+- Built and unit-tested (`swift test`, 6 tests); `manifest.json` generates and validates.
+- The **unsigned** worker was driven over GPP by hand (configure → prepare → `audio.separate`) and its stem is
+  byte-identical to `sam-audio-inproc` and to the engine package's own validation run.
+- **Not yet done:** signing, `scripts/check-plugin.sh`, `scripts/golden.sh` and a release. They need the Developer ID
+  certificate (team `CFZS6RXUCP`), which the Mac this was written on does not have.
+- **`minGaea` is a placeholder.** The plugin needs a Gaea whose host is on media-engine-spec 0.13.0 or later; set it to
+  that release before tagging.
+
+## Build
+
+Written from the [plugin template](https://github.com/xocialize-code/gaea-plugin-demo/blob/main/AUTHORING.md).
+
+```bash
+scripts/build-plugin.sh
+```
+
+```bash
+scripts/check-plugin.sh
+```
+
+```bash
+scripts/golden.sh dist/golden
+```
+
+`CHECK_MODELS_ROOT` names a models folder that holds `mlx-community/sam-audio-base-swift-fp16`.

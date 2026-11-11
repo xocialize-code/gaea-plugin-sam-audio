@@ -1,0 +1,14 @@
+.build/
+.swiftpm/
+dist/
+*.p12
+.DS_Store
+
+# leftovers from the template copy (the AuK plugin); not part of this plugin
+/Sources/AuKPlugin/
+/Sources/auk-inproc/
+/Sources/gaea-auk-worker/
+/Tests/AuKPluginTests/
+/LICENSE-SAM
+/scripts/fixtures/mix-two.wav
+/scripts/fixtures/ref-en.wav
