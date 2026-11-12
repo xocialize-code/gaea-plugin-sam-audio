@@ -66,7 +66,7 @@ fi
 [[ ${PUBLISH:-yes} == yes ]] || { print "PUBLISH=no: done"; exit 0 }
 
 step "GitHub Release $TAG"
-assets=($ZIP $ZIP.sha256 $DIST/manifest.json)
+assets=($ZIP $ZIP.sha256 $DIST/manifest.json $ROOT/LICENSE)   # the SAM License goes with every copy
 sha=$(cut -d' ' -f1 $ZIP.sha256)
 if [[ $notarized == yes ]]; then
   state="Signed with Developer ID (hardened runtime, secure timestamp) and notarized."

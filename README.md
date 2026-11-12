@@ -39,12 +39,11 @@ curl -s -H 'MES-Version: 0.1' -H 'Content-Type: application/json' http://localho
 ## Status
 
 - Built and unit-tested (`swift test`, 6 tests); `manifest.json` generates and validates.
-- The **unsigned** worker was driven over GPP by hand (configure → prepare → `audio.separate`) and its stem is
-  byte-identical to `sam-audio-inproc` and to the engine package's own validation run.
-- **Not yet done:** signing, `scripts/check-plugin.sh`, `scripts/golden.sh` and a release. They need the Developer ID
-  certificate (team `CFZS6RXUCP`), which the Mac this was written on does not have.
-- **`minGaea` is `1.6.0`**, the first Gaea on media-engine-spec 0.13.0. That version is not released yet, and no
-  described separation has run through a Gaea host end to end.
+- Signed in CI with Developer ID (team `CFZS6RXUCP`). On the signed bundle, `scripts/check-plugin.sh` passes with the
+  GPU job and `scripts/golden.sh` is 5/5 byte-identical to `sam-audio-inproc`.
+- Through Gaea 1.6.0 (the first Gaea on media-engine-spec 0.13.0, and this plugin's `minGaea`), MES conformance
+  AUDIO-019 to 021 pass: a described separation end to end, spans, and the refusals.
+- The bundle carries a copy of the SAM License (`Contents/Resources/LICENSE`), and each release attaches one.
 
 ## Build
 

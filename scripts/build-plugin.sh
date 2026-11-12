@@ -64,6 +64,8 @@ cp $BIN/$PRODUCT $B/Contents/MacOS/$EXE
 # build folder gone a missing one is a crash, not an error (AB-L-0318).
 for bundle in $BIN/*.bundle(N); do ditto $bundle $B/Contents/Resources/${bundle:t}; done
 cp $DIST/manifest.json $B/Contents/Resources/manifest.json
+# The SAM License allows redistribution only with a copy of it: the copy travels inside the seal.
+cp $ROOT/LICENSE $B/Contents/Resources/LICENSE
 cat > $B/Contents/Info.plist <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
