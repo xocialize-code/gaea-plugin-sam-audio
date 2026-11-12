@@ -33,7 +33,7 @@ curl -s -H 'MES-Version: 0.1' -H 'Content-Type: application/json' http://localho
 - `describe`: 1–200 characters. Short lowercase noun or verb phrases work; sentences do not. It is trimmed and
   lower-cased for the model, and `effective.describe` reports what the model got.
 - `spans`: up to 32 of `{start_s, end_s, present}`, where the sound is, or is not, present. They help sounds that come
-  and go. A span ending more than a frame (40 ms) past the mixture is refused as `out_of_limits`.
+  and go. A span ending past the mixture's end is refused as `out_of_limits`: Gaea allows one sample, never a clip.
 - The same seed gives the same bytes.
 
 ## Status
@@ -43,8 +43,8 @@ curl -s -H 'MES-Version: 0.1' -H 'Content-Type: application/json' http://localho
   byte-identical to `sam-audio-inproc` and to the engine package's own validation run.
 - **Not yet done:** signing, `scripts/check-plugin.sh`, `scripts/golden.sh` and a release. They need the Developer ID
   certificate (team `CFZS6RXUCP`), which the Mac this was written on does not have.
-- **`minGaea` is a placeholder.** The plugin needs a Gaea whose host is on media-engine-spec 0.13.0 or later; set it to
-  that release before tagging.
+- **`minGaea` is `1.6.0`**, the first Gaea on media-engine-spec 0.13.0. That version is not released yet, and no
+  described separation has run through a Gaea host end to end.
 
 ## Build
 

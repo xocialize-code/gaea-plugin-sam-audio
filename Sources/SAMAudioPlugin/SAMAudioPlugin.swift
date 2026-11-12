@@ -174,7 +174,7 @@ func offers() -> [PluginManifest.Offer] {
 }
 
 public let samAudioPlugin = GaeaPluginDefinition(
-    id: "com.xocialize.gaea.samaudio", version: "0.1.0", minGaea: "1.1.1", team: "CFZS6RXUCP",
+    id: "com.xocialize.gaea.samaudio", version: "0.1.0", minGaea: "1.6.0", team: "CFZS6RXUCP",
     repo: "https://github.com/xocialize-code/gaea-plugin-sam-audio", title: "SAM-Audio",
     summary: "SAM-Audio base (Meta): separates the sound you describe from a mixture, with the rest as a second stem. SAM License.",
     license: "LicenseRef-SAM", executable: "gaea-sam-audio-worker",
